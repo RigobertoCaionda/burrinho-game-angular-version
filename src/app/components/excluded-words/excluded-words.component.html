@@ -1,0 +1,8 @@
+<table mat-table [dataSource]="data.excludedWords" class="mat-elevation-z8">
+  <ng-container matColumnDef="word">
+    <th mat-header-cell *matHeaderCellDef> Nome </th>
+    <td mat-cell *matCellDef="let word"> {{ word.nome }} </td>
+  </ng-container>
+
+  <tr mat-row *matRowDef="let row; columns: ['word']"></tr>
+</table>
