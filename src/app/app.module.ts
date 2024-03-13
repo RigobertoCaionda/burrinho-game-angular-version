@@ -11,13 +11,14 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { ExcludedWordsComponent } from './components/excluded-words/excluded-words.component';
 import { MatTableModule } from '@angular/material/table';
+import { MatInputModule } from '@angular/material/input';
 
 @NgModule({
   declarations: [
     AppComponent,
     LayoutComponent,
     DialogComponent,
-    ExcludedWordsComponent
+    ExcludedWordsComponent,
   ],
   imports: [
     BrowserModule,
@@ -26,9 +27,10 @@ import { MatTableModule } from '@angular/material/table';
     BrowserAnimationsModule,
     MatDialogModule,
     MatFormFieldModule,
-    MatTableModule
+    MatTableModule,
+    MatInputModule
   ],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}

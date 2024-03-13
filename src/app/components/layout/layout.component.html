@@ -43,6 +43,7 @@
               class="form-select checkbox"
               id="exampleFormControlSelect1"
               [(ngModel)]="this.mode"
+              (ngModelChange)="onModeChange()"
               [disabled]="this.started"
             >
               <option value=""></option>
@@ -120,6 +121,7 @@
             [(ngModel)]="playedLetter"
             (keyup)="onKeyUp($event)"
             maxlength="1"
+            [disabled]="pcIsOnMatch && this.player2.isPlaying"
             #inputRef
           />
         </div>
@@ -129,11 +131,11 @@
             pulse: player2.isPlaying
           }"
         >
-          J2
+          {{ player2Name }}
         </div>
         <button class="btn btn-primary interrogation-point" [disabled]="!started || !player2.isPlaying" (click)="openDialog()">?</button>
         <div>
-          <button type="button" class="btn btn-primary" (click)="finish()" [disabled]="!started || !playedLetters">CONCLUIR</button>
+          <button type="button" class="btn btn-primary" (click)="finish()" [disabled]="!started || !playedLetters || (pcIsOnMatch && player2.isPlaying) ">CONCLUIR</button>
         </div>
       </div>
 

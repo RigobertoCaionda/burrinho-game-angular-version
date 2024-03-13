@@ -1,6 +1,9 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { LayoutComponent } from './layout.component';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { AppComponent } from 'src/app/app.component';
 
 describe('LayoutComponent', () => {
   let component: LayoutComponent;
@@ -8,9 +11,9 @@ describe('LayoutComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ LayoutComponent ]
-    })
-    .compileComponents();
+      declarations: [LayoutComponent, AppComponent],
+      imports: [MatDialogModule, MatFormFieldModule],
+    }).compileComponents();
 
     fixture = TestBed.createComponent(LayoutComponent);
     component = fixture.componentInstance;
