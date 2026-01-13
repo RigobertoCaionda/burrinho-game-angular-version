@@ -1,7 +1,7 @@
 .game-area {
   display: flex;
   justify-content: center;
-  background-color: red;
+  background-color: #2b0f14; /* fundo principal */
   padding: 50px;
 }
 .game-banner {
@@ -15,11 +15,11 @@
 .game-stats {
   margin-left: 30px;
   padding: 10px 35px;
-  background-color: #990000;
+   background-color: #4a1c24; /* painel principal */
   height: fit-content;
 }
 .white {
-  color: white;
+  color: #f5f5f5; /* branco suave */
 }
 .title {
   font-size: 2.1rem;
@@ -36,13 +36,13 @@
   justify-content: space-between;
 }
 .points {
-  color: red;
+  color: #f2c94c; /* dourado elegante */
 }
 .categories {
   display: flex;
   margin-top: 10px;
   padding: 10px;
-  background-color: #5C0000;
+  background-color: #5f232c; /* sub-painel */
 }
 .player {
   display: flex;
@@ -57,7 +57,7 @@
   line-height: 40px;
   text-align: center;
   font-weight: bold;
-  background-color: white;
+   background-color: #fafafa; /* branco suave */
   margin-right: 2px;
 }
 .square:last-child {
@@ -70,6 +70,7 @@
   margin-right: 15px;
   font-weight: bold;
   font-size: 1.2rem;
+  color: #f5f5f5;
 }
 .player1 {
   margin-bottom: 10px;
@@ -78,10 +79,10 @@
   width: 60px;
   height: 60px;
   border-radius: 50%;
-  border: 2px solid #fff;
+   border: 2px solid #f2c94c; /* destaque */
   text-align: center;
   line-height: 60px;
-  color: #fff;
+  color: #f2c94c;
   font-size: 1.5rem;
 }
 .timer-area {
@@ -90,7 +91,7 @@
   margin: 15px 0;
 }
 .panel {
-  background-color: #5C0000;
+   background-color: #5f232c; /* painel inferior */
   padding: 15px;
 }
 .checkbox {
@@ -121,7 +122,8 @@
   margin-right: 5px;
   width: 35px;
   height: 35px;
-  background-color: #DCDCDC;
+  background-color: #e0e0e0;
+  color: #2b0f14;
   text-align: center;
   line-height: 35px;
 }
@@ -140,6 +142,7 @@
   text-align: center;
   margin-top: 5px;
   min-height: 30px;
+  color: #f2c94c; /* destaque visual */
   transition: all ease-in-out 0.4s;
 }
 .element-img {
@@ -166,9 +169,27 @@
   width: 38px !important;
   height: 38px !important;
   margin-right: 5px;
+  background-color: #f2c94c;
+  color: #2b0f14;
+  border: none;
 }
 .pulse {
   animation: pulse 0.6s infinite;
+}
+.btn-primary {
+  background-color: #f2c94c;
+  border-color: #f2c94c;
+  color: #2b0f14;
+}
+
+.btn-primary:hover {
+  background-color: #e6b93c;
+  border-color: #e6b93c;
+}
+.form-select,
+.form-control {
+  background-color: #fafafa;
+  color: #2b0f14;
 }
 @keyframes pulse {
   0% {

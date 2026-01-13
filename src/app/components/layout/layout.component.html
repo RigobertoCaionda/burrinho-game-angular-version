@@ -10,8 +10,8 @@
     <h4 class="credentials white">Feito Por Rigoberto Caionda</h4>
     <div class="placard">
       <div class="punctuation">
-        <div class="white">Pontuação J1: <span class="points">{{ this.player1.points }}</span></div>
-        <div class="white">Pontuação J2: <span class="points">{{ this.player2.points }}</span></div>
+        <div class="white">Pontuação J1: <span class="points"></span></div>
+        <div class="white">Pontuação J2: <span class="points"></span></div>
       </div>
 
       <div class="categories row">
@@ -23,8 +23,6 @@
             <select
               class="form-select checkbox"
               id="exampleFormControlSelect1"
-              [(ngModel)]="this.category"
-              [disabled]="this.started"
             >
               <option value=""></option>
               <option value="país">País</option>
@@ -42,9 +40,6 @@
             <select
               class="form-select checkbox"
               id="exampleFormControlSelect1"
-              [(ngModel)]="this.mode"
-              (ngModelChange)="onModeChange()"
-              [disabled]="this.started"
             >
               <option value=""></option>
               <option value="amigo">Amigo</option>
@@ -57,10 +52,9 @@
           <button
             type="button"
             class="btn btn-primary col-md-12"
-            [disabled]="!category || !mode"
-            (click)="startGame()"
+            (click)="startgame()"
           >
-            {{ started ? "Parar Jogo" : "Iniciar Jogo" }}
+            {{ "Iniciar Jogo" }}
           </button>
         </div>
       </div>
@@ -70,7 +64,7 @@
       <div class="player player1">
         <div class="label white">Jogador 1</div>
         <div class="square-area">
-          <div class="square" *ngFor="let item of squareLength; let i = index">
+          <div class="square" *ngFor="let _ of [].constructor(8); let i = index">
             {{ burrinhoPlayer1[i] }}
           </div>
         </div>
@@ -78,8 +72,8 @@
       <div class="player player2">
         <div class="label white">Jogador 2</div>
         <div class="square-area">
-          <div class="square" *ngFor="let item of squareLength; let i = index">
-            {{ burrinhoPlayer2[i] }}
+          <div class="square" *ngFor="let _ of [].constructor(8); let i = index">
+           {{ burrinhoPlayer2[i] }}
           </div>
         </div>
       </div>
@@ -94,12 +88,10 @@
         <button
           type="button"
           class="btn btn-primary"
-          (click)="play()"
-          [disabled]="!this.started || !playedLetter"
         >
           JOGAR
         </button>
-        <button type="button" class="btn btn-primary" (click)="openExcludedWordsDialog()" [disabled]="!started">NOMES EXCLUÍDOS</button>
+        <button type="button" class="btn btn-primary">NOMES EXCLUÍDOS</button>
         <button type="button" class="btn btn-primary">INSTRUÇÕES</button>
       </div>
 
@@ -107,62 +99,57 @@
         <div
           class="little-square"
           [ngClass]="{
-            pulse: player1.isPlaying
+            pulse: false
           }"
         >
           J1
         </div>
-        <button class="btn btn-primary interrogation-point" [disabled]="!started || !player1.isPlaying" (click)="openDialog()">?</button>
+        <button class="btn btn-primary interrogation-point">?</button>
         <div class="input-field">
           <input
             type="text"
             class="form-control"
             placeholder="Digite uma letra"
-            [(ngModel)]="playedLetter"
-            (keyup)="onKeyUp($event)"
             maxlength="1"
-            [disabled]="pcIsOnMatch && this.player2.isPlaying"
             #inputRef
           />
         </div>
         <div
           class="little-square"
           [ngClass]="{
-            pulse: player2.isPlaying
+            pulse: false
           }"
         >
-          {{ player2Name }}
+          {{ 'J2' }}
         </div>
-        <button class="btn btn-primary interrogation-point" [disabled]="!started || !player2.isPlaying" (click)="openDialog()">?</button>
+        <button class="btn btn-primary interrogation-point">?</button>
         <div>
-          <button type="button" class="btn btn-primary" (click)="finish()" [disabled]="!started || !playedLetters || (pcIsOnMatch && player2.isPlaying) ">CONCLUIR</button>
+          <button type="button" class="btn btn-primary">CONCLUIR</button>
         </div>
       </div>
 
       <div
         class="result-area white"
-        [style.opacity]="playedLetters ? '1' : '0'"
       >
-        {{ playedLetters | uppercase }}
+        {{ currentPlayedLetters | uppercase }}
       </div>
 
-      <div *ngIf="showAlert" [class]="'alert alert-' + alertType" role="alert">
-        {{ alertMessage }}
+      <!-- <div [class]="'alert alert-success'" role="alert">
+        {{ 'Olá mundo' }}
         <button
           type="button"
           class="close"
           aria-label="Close"
-          (click)="hideBootstrapAlert()"
         >
           <span aria-hidden="true">&times;</span>
         </button>
-      </div>
+      </div> -->
 
       <div class="choosed-element" *ngIf="showDetails">
-        <div class="name white">Nome: {{ details.nome }}</div>
-        <div class="owner white">País: {{ details.continente }}</div>
+        <div class="name white">Nome: {{ 'Messi' }}</div>
+        <div class="owner white">País: {{ 'Luanda' }}</div>
         <div class="element-img">
-          <img [src]="details.img ? '../../../'+details.img : '../../../assets/images/anonimoP.jpg'" />
+          <img [src]="1 ? '../../../assets/images/messi.jpg' : '../../../assets/images/anonimoP.jpg'" />
         </div>
       </div>
     </div>
