@@ -496,7 +496,7 @@ export class LayoutComponent {
   burrinhoLetters = 'BURRINHO';
   burrinhoPlayer1: string[] = [];
   burrinhoPlayer2: string[] = [];
-  timer = 15;
+  timer = 20;
   private timerInterval: any;
 
 
