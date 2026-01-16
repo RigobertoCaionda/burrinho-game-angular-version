@@ -8,7 +8,7 @@ import { Player } from '../core/entities/Player';
 })
 export class PlayerService {
 
-    private apiUrl = 'http://77.42.85.245:3333';
+    private apiUrl = 'https://api.rigobertocaionda.it.ao';
 
   constructor(private http: HttpClient) {}
 
