@@ -1,4 +1,4 @@
-import { Component, ElementRef, ViewChild } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { Timer } from 'src/app/utils/Timer';
 import { paises } from 'src/app/utils/Players';
 import { MatDialog } from '@angular/material/dialog';
@@ -6,13 +6,14 @@ import { DialogComponent } from '../dialog/dialog.component';
 import { ExcludedWordsComponent } from '../excluded-words/excluded-words.component';
 import { BehaviorSubject, Subscription } from 'rxjs';
 import { Player } from 'src/app/core/entities/Player';
+import { PlayerService } from 'src/app/services/player.service';
 
 @Component({
   selector: 'app-layout',
   templateUrl: './layout.component.html',
   styleUrls: ['./layout.component.css'],
 })
-export class LayoutComponent {
+export class LayoutComponent implements OnInit {
   // // @ts-ignore o @ts-ignore ignora o erro de inicialização do inputRef
   // @ViewChild('inputRef') inputRef: ElementRef;
   // @ViewChild('winnerAudio') winnerAudio!: ElementRef<HTMLAudioElement>;
@@ -502,11 +503,26 @@ export class LayoutComponent {
   public player1: Player;
   public player2: Player;
 
-  constructor() {
-    this.player1 = new Player("Rigoberto");
-    this.player2 = new Player("Silvio");
+  constructor(private playerService: PlayerService) {
+    this.player1 = new Player(1, "Rigoberto", "rigobertocaionda98@gmail.com");
+    this.player2 = new Player(2, "Silvio", "silvio@example.com");
   }
 
+  ngOnInit() {
+    this.getPlayer1Data()
+    this.getPlayer2Data()
+  }
+
+  public getPlayer1Data() {
+    this.playerService.showPlayer(this.player1).subscribe(res => {
+      this.player1.score = parseInt(res.score);
+    })
+  }
+  public getPlayer2Data() {
+    this.playerService.showPlayer(this.player2).subscribe(res => {
+      this.player2.score = parseInt(res.score);
+    })
+  }
 
   private reduceTimer() {
     this.timerInterval = setInterval(() => {
@@ -522,7 +538,8 @@ export class LayoutComponent {
           const winner = this.getWinner();
           if (winner) {
             this.scorePointToPlayer(winner);
-            // Enviar score para o banco de dados através do winner.id
+            this.playerService.saveScore(winner).subscribe(res => {
+            })
             alert(`O jogador ${winner.name} ganhou!`);
         }
         this.resetGame();
@@ -597,6 +614,6 @@ export class LayoutComponent {
   }
 
   public scorePointToPlayer(player: Player) {
-    player.score += 1;
+    player.score = (player.score) + 1;
   }
 }
