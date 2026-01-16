@@ -10,8 +10,8 @@
     <h4 class="credentials white">Feito Por Rigoberto Caionda</h4>
     <div class="placard">
       <div class="punctuation">
-        <div class="white">Pontuação J1: <span class="points"></span></div>
-        <div class="white">Pontuação J2: <span class="points"></span></div>
+        <div class="white">Pontuação J1: <span class="points">{{ this.player1.score }}</span></div>
+        <div class="white">Pontuação J2: <span class="points">{{ this.player2.score }}</span></div>
       </div>
 
       <div class="categories row">
@@ -99,7 +99,7 @@
         <div
           class="little-square"
           [ngClass]="{
-            pulse: false
+            pulse: this.player1.isPlaying
           }"
         >
           J1
@@ -117,7 +117,7 @@
         <div
           class="little-square"
           [ngClass]="{
-            pulse: false
+            pulse: this.player2.isPlaying
           }"
         >
           {{ 'J2' }}

@@ -1,11 +1,11 @@
 import { Component, ElementRef, ViewChild } from '@angular/core';
-import { Player } from 'src/app/utils/Player';
 import { Timer } from 'src/app/utils/Timer';
 import { paises } from 'src/app/utils/Players';
 import { MatDialog } from '@angular/material/dialog';
 import { DialogComponent } from '../dialog/dialog.component';
 import { ExcludedWordsComponent } from '../excluded-words/excluded-words.component';
 import { BehaviorSubject, Subscription } from 'rxjs';
+import { Player } from 'src/app/core/entities/Player';
 
 @Component({
   selector: 'app-layout',
@@ -496,27 +496,107 @@ export class LayoutComponent {
   burrinhoLetters = 'BURRINHO';
   burrinhoPlayer1: string[] = [];
   burrinhoPlayer2: string[] = [];
-  timer = 15;
+  timer = 5;
+  time = 5;
   private timerInterval: any;
+  public player1: Player;
+  public player2: Player;
+
+  constructor() {
+    this.player1 = new Player("Rigoberto");
+    this.player2 = new Player("Silvio");
+  }
 
 
   private reduceTimer() {
     this.timerInterval = setInterval(() => {
-      if (this.timer > 0) {
+      if (this.timer > 1) {
         this.timer -= 1;
       } else {
         clearInterval(this.timerInterval);
+        this.setLetterToPlayer(this.player1.isPlaying ? this.player1 : this.player2);
+        this.switchTurns();
+        this.restartTimer();
+        const isGameOver = this.isGameOver();
+        if (isGameOver) {
+          const winner = this.getWinner();
+          if (winner) {
+            this.scorePointToPlayer(winner);
+            // Enviar score para o banco de dados através do winner.id
+            alert(`O jogador ${winner.name} ganhou!`);
+        }
+        this.resetGame();
+      }
       }
     }, 1000);
   }
 
   private restartTimer() {
     clearInterval(this.timerInterval);
-    this.timer = 15;
+    this.timer = this.time;
     this.reduceTimer();
   }
 
   public startgame() {
+    this.chooseStarter();
     this.reduceTimer();
+  }
+
+  private chooseStarter() {
+    const starter = Math.round(Math.random() + 1);
+    if (starter === 1) {
+      this.player1.setPlayingStatus(true);
+      this.player2.setPlayingStatus(false);
+    } else {
+      this.player2.setPlayingStatus(true);
+      this.player1.setPlayingStatus(false);
+    }
+  }
+
+  private setLetterToPlayer(player: Player) {
+    const index = player === this.player1 ? this.burrinhoPlayer1.length : this.burrinhoPlayer2.length;
+    if (player === this.player1) {
+      this.burrinhoPlayer1.push(this.burrinhoLetters[index]);
+    } else {
+      this.burrinhoPlayer2.push(this.burrinhoLetters[index]);
+    }
+  }
+
+  public switchTurns() {
+    if (this.player1.isPlaying) {
+      this.player1.setPlayingStatus(false);
+      this.player2.setPlayingStatus(true);
+    } else {
+      this.player2.setPlayingStatus(false);
+      this.player1.setPlayingStatus(true);
+    }
+  }
+
+  public isGameOver(): boolean {
+    return this.burrinhoPlayer1.length >= 8 || this.burrinhoPlayer2.length >= 8;
+  }
+
+  public getWinner(): Player | null {
+    if (this.burrinhoPlayer1.length >= 8) {
+      return this.player2;
+    } else if (this.burrinhoPlayer2.length >= 8) {
+      return this.player1;
+    }
+    return null;
+  }
+
+  public resetGame() {
+    clearInterval(this.timerInterval);
+    this.timer = this.time;
+    this.burrinhoPlayer1 = [];
+    this.burrinhoPlayer2 = [];
+    this.player1.setPlayingStatus(false);
+    this.player2.setPlayingStatus(false);
+    this.currentPlayedLetters = '';
+    this.showDetails = false;
+  }
+
+  public scorePointToPlayer(player: Player) {
+    player.score += 1;
   }
 }
