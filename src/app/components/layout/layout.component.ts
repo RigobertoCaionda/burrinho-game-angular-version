@@ -515,13 +515,12 @@ export class LayoutComponent implements OnInit {
 
   public getPlayer1Data() {
     this.playerService.showPlayer(this.player1).subscribe(res => {
-      //this.player1.score = parseInt(res.score);
+      this.player1.score = parseInt(res?.score);
     })
   }
   public getPlayer2Data() {
     this.playerService.showPlayer(this.player2).subscribe(res => {
-      console.log('res', res)
-      //this.player2.score = parseInt(res.score);
+      this.player2.score = parseInt(res?.score);
     })
   }
 
