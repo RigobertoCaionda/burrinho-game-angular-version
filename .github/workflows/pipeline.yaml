@@ -3,11 +3,11 @@ name: CI/CD Pipeline
 on:
   pull_request:
     branches:
-      - feature/development
+      - develop
 
   push:
     branches:
-      - feature/development
+      - develop
 
 jobs:
   build:
@@ -46,7 +46,7 @@ jobs:
 
     # Sem isso, o CD(Deploy rodaria também nos pull requests), desse jeito o deploy (CD) só roda em push/merge
     # Quando o código é push/merge, geralmente github.ref será igual à refs/heads/NOME_DA_BRANCH, já quando estamos diante de um pull_request o github.ref é igual à refs/pull/ALGUM_CÓDIGO/merge
-    if: github.ref == 'refs/heads/feature/development'
+    if: github.ref == 'refs/heads/develop'
 
     steps:
       # Aqui estamos dizendo: Pega no build gerado lá no job build com o actions/upload-artifact@v4  com nome angular-dist e baixa ela aqui no job deploy e coloca na pasta dist
