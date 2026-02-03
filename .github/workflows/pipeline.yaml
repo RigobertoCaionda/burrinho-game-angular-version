@@ -39,43 +39,43 @@ jobs:
           name: angular-dist
           path: dist/
 
-  deploy:
-    # O needs build basicamente diz: Esse job só roda se o o job build passar
-    needs: build
-    runs-on: ubuntu-latest
+  # deploy:
+  #   # O needs build basicamente diz: Esse job só roda se o o job build passar
+  #   needs: build
+  #   runs-on: ubuntu-latest
 
-    # Sem isso, o CD(Deploy rodaria também nos pull requests), desse jeito o deploy (CD) só roda em push/merge
-    # Quando o código é push/merge, geralmente github.ref será igual à refs/heads/NOME_DA_BRANCH, já quando estamos diante de um pull_request o github.ref é igual à refs/pull/ALGUM_CÓDIGO/merge
-    if: github.ref == 'refs/heads/develop'
+  #   # Sem isso, o CD(Deploy rodaria também nos pull requests), desse jeito o deploy (CD) só roda em push/merge
+  #   # Quando o código é push/merge, geralmente github.ref será igual à refs/heads/NOME_DA_BRANCH, já quando estamos diante de um pull_request o github.ref é igual à refs/pull/ALGUM_CÓDIGO/merge
+  #   if: github.ref == 'refs/heads/develop'
 
-    steps:
-      # Aqui estamos dizendo: Pega no build gerado lá no job build com o actions/upload-artifact@v4  com nome angular-dist e baixa ela aqui no job deploy e coloca na pasta dist
-      - name: Download build artifact
-        uses: actions/download-artifact@v4
-        with:
-          # É o nome do artefacto que será baixado (Foi definido lá em cima no build)
-          name: angular-dist
-          # Vai ser colocado na pasta dist
-          path: dist/
+  #   steps:
+  #     # Aqui estamos dizendo: Pega no build gerado lá no job build com o actions/upload-artifact@v4  com nome angular-dist e baixa ela aqui no job deploy e coloca na pasta dist
+  #     - name: Download build artifact
+  #       uses: actions/download-artifact@v4
+  #       with:
+  #         # É o nome do artefacto que será baixado (Foi definido lá em cima no build)
+  #         name: angular-dist
+  #         # Vai ser colocado na pasta dist
+  #         path: dist/
 
-        # Usa uma action pronta que permite se conectar ao teu servidor
-      - name: Deploy para VPS (SCP com senha)
-      # Action que está sendo usada para se conectar ao servidor
-        uses: appleboy/scp-action@v0.1.7
-        with:
-          host: ${{ secrets.VPS_HOST }}
-          username: ${{ secrets.VPS_USER }}
-          password: ${{ secrets.VPS_PASSWORD }}
-          # Aqui basicamente diz: Depois de conectado ao servidor, Pega o que está na pasta dist e coloca no target (Coloca na pasta) secrets.VPS_PATH que no meu caso é um secret que corresponde à: /var/www/burrinho-frontend. Isso substitui também os arquivos antigos que tinha
-          source: "dist/**"
-          target: ${{ secrets.VPS_PATH }}
+  #       # Usa uma action pronta que permite se conectar ao teu servidor
+  #     - name: Deploy para VPS (SCP com senha)
+  #     # Action que está sendo usada para se conectar ao servidor
+  #       uses: appleboy/scp-action@v0.1.7
+  #       with:
+  #         host: ${{ secrets.VPS_HOST }}
+  #         username: ${{ secrets.VPS_USER }}
+  #         password: ${{ secrets.VPS_PASSWORD }}
+  #         # Aqui basicamente diz: Depois de conectado ao servidor, Pega o que está na pasta dist e coloca no target (Coloca na pasta) secrets.VPS_PATH que no meu caso é um secret que corresponde à: /var/www/burrinho-frontend. Isso substitui também os arquivos antigos que tinha
+  #         source: "dist/**"
+  #         target: ${{ secrets.VPS_PATH }}
 
-      # Nesse passo, basicamente estamos dizendo o seguinte com esse comando:  sudo chown -R www-data:www-data ${{ secrets.VPS_PATH }}: Estamos dizendo que agora o usuário www-data (Que é o usuário padrão do nginx) é o dono da pasta do meu projeto, isso para evitar o risco de o nginx não conseguir acessar o meu projeto.
-      - name: Ajustar permissões
-        uses: appleboy/ssh-action@v1.0.3
-        with:
-          host: ${{ secrets.VPS_HOST }}
-          username: ${{ secrets.VPS_USER }}
-          password: ${{ secrets.VPS_PASSWORD }}
-          script: |
-            sudo chown -R www-data:www-data ${{ secrets.VPS_PATH }}
+  #     # Nesse passo, basicamente estamos dizendo o seguinte com esse comando:  sudo chown -R www-data:www-data ${{ secrets.VPS_PATH }}: Estamos dizendo que agora o usuário www-data (Que é o usuário padrão do nginx) é o dono da pasta do meu projeto, isso para evitar o risco de o nginx não conseguir acessar o meu projeto.
+  #     - name: Ajustar permissões
+  #       uses: appleboy/ssh-action@v1.0.3
+  #       with:
+  #         host: ${{ secrets.VPS_HOST }}
+  #         username: ${{ secrets.VPS_USER }}
+  #         password: ${{ secrets.VPS_PASSWORD }}
+  #         script: |
+  #           sudo chown -R www-data:www-data ${{ secrets.VPS_PATH }}
